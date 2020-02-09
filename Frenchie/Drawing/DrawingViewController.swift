@@ -44,21 +44,19 @@ final class DrawingViewController: UIViewController, LineToolDelegate {
         toolbar.tintColor = .black
         toolbar.isTranslucent = false
         canvasView.backgroundColor = .white
+        canvasView.clipsToBounds = true
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func loadView() {
-        view = stackView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = .white
-        view.insetsLayoutMarginsFromSafeArea = true
 
         let flex = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
@@ -81,6 +79,15 @@ final class DrawingViewController: UIViewController, LineToolDelegate {
         canvasView.tool = lineTool
 
         lineTool.setColor(color: UIColor.drawingColorPalette[0])
+        
+        view.addSubview(stackView)
+        
+        NSLayoutConstraint.activate([
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            stackView.topAnchor.constraint(equalTo: view.topAnchor),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
     }
 
     override func viewDidAppear(_ animated: Bool) {
